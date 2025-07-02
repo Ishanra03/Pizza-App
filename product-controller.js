@@ -37,8 +37,6 @@ function preparePizzaCard(pizza) {
     cardDiv.className = 'card h-100';
 
     const img = document.createElement('img');
-    img.src = pizza.url; 
-    img.alt = pizza.name;
     img.className = 'card-img-top';
     cardDiv.appendChild(img);
 
