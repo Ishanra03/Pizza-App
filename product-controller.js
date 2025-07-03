@@ -27,6 +27,27 @@ loadPizzas();
                     </div>
 */
 
+function addToCart(){
+    console.log('Add to cart clicked',this);  //this -keyword (current calling refernce)
+    const currentButton=this;
+    const pizzaId=currentButton.getAttribute('product-id');
+    console.log('Pizza Id is',pizzaId);
+    productOperations.search(pizzaId);
+    printBasket();
+}
+
+function printBasket(){
+   const cartProducts= productOperations.getProductsInCart();
+   const basket=document.querySelector('#basket');
+   basket.innerHTML='';
+   for(let product of cartProducts){
+    const li=document.createElement('li');
+    li.innerText=`${product.name} Rs.${product.price}/-`;
+    basket.appendChild(li);
+}
+}
+
+
 function preparePizzaCard(pizza) {
     const outputDiv = document.querySelector('#output');
 
@@ -52,6 +73,8 @@ function preparePizzaCard(pizza) {
     ptag.innerText = pizza.desc;
 
     const button = document.createElement('button');
+    button.setAttribute('product-id',pizza.id);
+    button.addEventListener('click',addToCart);  //Event Bind
     button.className = 'btn btn-primary';
     button.innerText = 'Add to Cart';
 
