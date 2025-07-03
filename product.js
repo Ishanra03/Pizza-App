@@ -7,6 +7,7 @@ constructor(id,name,desc,price,url){
     this.desc=desc;
     this.price=price;
     this.URL=URL;
+    this.isAddedInCart=false;
     
 }
 }
