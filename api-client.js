@@ -1,17 +1,27 @@
-//Network call code 
+// scripts/api-client.js
+
+// Network call code 
 export async function doNetworkCall() {
     try {
-        const URL = 'https://gist.githubusercontent.com/Ishanra03/4f9804f12d10ad692d014fba66115ddc/raw/7ca3b3fd7a3f2f3a52769b4a6af26161cd470a5f/pizza.json';
-        const response = await fetch(URL);
+        //  Local JSON file path (relative to index.html)
+       const url = 'scripts/pizza.json';
+
+
+        const response = await fetch(url);
         console.log("Raw response:", response);
-        const object = await response.json();
+
+        const object = await response.json(); // Parse JSON data
         console.log("Parsed JSON:", object);
+
         return object;
     } catch (err) {
         console.log('Some problem in API call', err);
         throw err;
     }
 }
+
+export default doNetworkCall;
+
 
 //     const URL='https://gist.githubusercontent.com/kshirsagarps/36fade16fa39202715656ef487aaf7b0/raw/2b682e589ef283f06be42d2799dfa54f57794a6e/Pizza.json';
 // const promise= fetch(URL);
@@ -34,5 +44,3 @@ export async function doNetworkCall() {
 // });
 
 // console.log('Good Bye');
-
-export default doNetworkCall;
