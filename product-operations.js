@@ -1,40 +1,65 @@
-// Products CRUD operations
 import Product from "../MODELS/product.js";
 import doNetworkCall from "../api-client.js";
 
-const productOperations={
-    products:[],    //Key-Value
-    search(pizzaId){
-       const product= this.products.find(currentProduct=>currentProduct.id==pizzaId);
-       console.log('Product found:', product);
-       product.isAddedInCart=true;
-       console.log('Array',this.products);
-    },
-    getProductsInCart(){
-       const productInBasket= this.products.filter(product=>product.isAddedInCart);
-       return productInBasket;
-    },
-    async loadProducts(){
-   const pizzas = await doNetworkCall();
-   const pizzaArray = pizzas['Vegetarian'];
-  const productsArray= pizzaArray.map(pizza=>{
-    const curentPizza=new Product(pizza.id,
+const productOperations = {
+  products: [],
+
+  search(pizzaId) {
+    const product = this.products.find(currentProduct => currentProduct.id == pizzaId);
+    if (product) {
+        if(product.isAddedInCart){
+            product.quantity+=1;
+        } else {
+                product.isAddedInCart = true;
+                product.quantity=1;
+        }
+      
+    }
+  },
+
+  removeFromCart(pizzaId) {
+  const product = this.products.find(currentProduct => currentProduct.id == pizzaId);
+  if (product && product.isAddedInCart) {
+    if (product.quantity > 1) {
+      product.quantity -= 1;
+    } else {
+      product.isAddedInCart = false;
+      product.quantity = 0;
+    }
+  }
+},
+
+
+  getProductsInCart() {
+    return this.products.filter(product => product.isAddedInCart);
+  },
+
+  async loadProducts() {
+    const pizzas = await doNetworkCall(); // Load from local or raw JSON
+    const pizzaArray = pizzas["Vegetarian"]; // Use correct JSON key
+
+    const productsArray = pizzaArray.map(pizza => {
+      const currentPizza = new Product(
+        pizza.id,
         pizza.name,
         pizza.menu_description,
         pizza.price,
-        pizza.URL);
-    return curentPizza;
-   });
-   console.log('***Product array ',productsArray);
-   this.products=productsArray;
-   return productsArray;  
-    },
-    sortProducts(){
+        pizza.url // Ensure 'url' matches what your JSON provides
+      );
+      return currentPizza;
+    });
 
-    },
-    searchProducts(){
+    this.products = productsArray;
+    return productsArray;
+  },
 
-    }
-}
+  sortProducts() {
+    // Optional: implement sorting if needed
+  },
+
+  searchProducts() {
+    // Optional: implement search if needed
+  }
+};
 
 export default productOperations;
